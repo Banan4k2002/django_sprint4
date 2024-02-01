@@ -1,53 +1,46 @@
-from django.shortcuts import get_object_or_404, render
+from django.views.generic import ListView, DetailView
 from .models import Post, Category
 import datetime
 
 
 POSTS_ON_HOMEPAGE = 5
 
-
-def index(request):
-    template = 'blog/index.html'
-    post_list = Post.objects.select_related(
+class PostMixin:
+    model = Post
+    queryset = Post.objects.select_related(
         'author', 'location', 'category'
     ).filter(
         pub_date__lte=datetime.datetime.now(),
         is_published=True,
         category__is_published=True,
-    )[
-        :POSTS_ON_HOMEPAGE
-    ]
-    context = {'post_list': post_list}
-    return render(request, template, context)
+    )
 
 
-def post_detail(request, id):
-    template = 'blog/detail.html'
-    post = get_object_or_404(
-        Post.objects.select_related('author', 'location', 'category'),
-        pk=id,
-        pub_date__lte=datetime.datetime.now(),
+class PostListView(PostMixin, ListView):
+    template_name = 'blog/index.html'
+    paginate_by = POSTS_ON_HOMEPAGE
+
+
+class PostDetailView(PostMixin, DetailView):
+    template_name = 'blog/detail.html'
+    pk_url_kwarg = 'id'
+
+
+class CategoryDetailView(DetailView):
+    model = Category
+    template_name = 'blog/category.html'
+    slug_url_kwarg = 'category_slug'
+    queryset = Category.objects.filter(
         is_published=True,
-        category__is_published=True,
     )
-    context = {'post': post}
-    return render(request, template, context)
 
-
-def category_posts(request, category_slug):
-    template = 'blog/category.html'
-    category = get_object_or_404(
-        Category, slug=category_slug, is_published=True
-    )
-    post_list = Post.objects.select_related(
-        'author', 'location', 'category'
-    ).filter(
-        pub_date__lte=datetime.datetime.now(),
-        is_published=True,
-        category__slug=category_slug,
-    )
-    context = {
-        'category': category,
-        'post_list': post_list,
-    }
-    return render(request, template, context)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['post_list'] = Post.objects.select_related(
+            'author', 'location', 'category'
+        ).filter(
+            pub_date__lte=datetime.datetime.now(),
+            is_published=True,
+            category__slug=self.kwargs.get('category_slug'),
+        )
+        return context
