@@ -5,6 +5,7 @@ import datetime
 
 POSTS_ON_HOMEPAGE = 5
 
+
 class PostMixin:
     model = Post
     queryset = Post.objects.select_related(
