@@ -60,6 +60,9 @@ class Post(BaseModel):
         on_delete=models.SET_NULL,
         verbose_name='Категория',
     )
+    image = models.ImageField(
+        blank=True, upload_to='post_images', verbose_name='Изображение'
+    )
 
     class Meta:
         verbose_name = 'публикация'
