@@ -71,3 +71,24 @@ class Post(BaseModel):
 
     def __str__(self):
         return self.title[:FIRST_CHARACTERS]
+
+
+class Comment(models.Model):
+    text = models.TextField(verbose_name='Текст')
+    created_at = models.DateTimeField(
+        verbose_name='Дата и время комментария', auto_now_add=True
+    )
+    author = models.ForeignKey(
+        User, on_delete=models.CASCADE, verbose_name='Автор публикации'
+    )
+    post = models.ForeignKey(
+        Post, on_delete=models.CASCADE, verbose_name='Автор публикации'
+    )
+
+    class Meta:
+        verbose_name = 'комментарий'
+        verbose_name_plural = 'Комментарии'
+        ordering = ('-created_at',)
+
+    def __str__(self):
+        return self.text
