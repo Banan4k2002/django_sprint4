@@ -79,10 +79,10 @@ class Comment(models.Model):
         verbose_name='Дата и время комментария', auto_now_add=True
     )
     author = models.ForeignKey(
-        User, on_delete=models.CASCADE, verbose_name='Автор публикации'
+        User, on_delete=models.CASCADE, verbose_name='Автор комментария'
     )
     post = models.ForeignKey(
-        Post, on_delete=models.CASCADE, verbose_name='Автор публикации'
+        Post, on_delete=models.CASCADE, verbose_name='Публикация'
     )
 
     class Meta:
