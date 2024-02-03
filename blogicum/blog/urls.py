@@ -10,7 +10,17 @@ urlpatterns = [
     ),
     path(
         'category/<slug:category_slug>/',
-        views.CategoryDetailView.as_view(),
+        views.CategoryPostListView.as_view(),
         name='category_posts',
+    ),
+    path(
+        'profile/<slug:username>/',
+        views.UserPostListView.as_view(),
+        name='profile',
+    ),
+    path(
+        'profile/<slug:username>/edit/',
+        views.UserUpdateView.as_view(),
+        name='edit_profile',
     ),
 ]
