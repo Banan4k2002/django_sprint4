@@ -1,7 +1,8 @@
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, UpdateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Post, Category, User
+from .forms import PostForm
 import datetime
 
 
@@ -26,7 +27,7 @@ class PostListView(PostMixin, ListView):
 
 class PostDetailView(PostMixin, DetailView):
     template_name = 'blog/detail.html'
-    pk_url_kwarg = 'id'
+    pk_url_kwarg = 'post_id'
 
 
 class CategoryPostListView(ListView):
@@ -77,3 +78,45 @@ class UserUpdateView(UpdateView):
     slug_url_kwarg = 'username'
     fields = ('first_name', 'last_name', 'username', 'email',)
     success_url = reverse_lazy('blog:index')
+
+
+class PostCreateView(CreateView):
+    model = Post
+    form_class = PostForm
+    template_name = 'blog/create.html'
+
+    def get_success_url(self):
+        return reverse_lazy('blog:profile', kwargs={'username': self.request.user})
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+
+class PostUpdateView(UpdateView):
+    model = Post
+    form_class = PostForm
+    template_name = 'blog/create.html'
+    pk_url_kwarg = 'post_id'
+
+    def get_success_url(self):
+        return reverse_lazy('blog:profile', kwargs={'username': self.request.user})
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+
+class PostDeleteView(DeleteView):
+    model = Post
+    template_name = 'blog/create.html'
+    pk_url_kwarg = 'post_id'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        instance = get_object_or_404(Post, pk=self.kwargs.get('post_id'))
+        context['form'] = PostForm(instance=instance)
+        return context
+
+    def get_success_url(self):
+        return reverse_lazy('blog:profile', kwargs={'username': self.request.user})
