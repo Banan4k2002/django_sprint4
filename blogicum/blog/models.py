@@ -82,13 +82,13 @@ class Comment(models.Model):
         User, on_delete=models.CASCADE, verbose_name='Автор комментария'
     )
     post = models.ForeignKey(
-        Post, on_delete=models.CASCADE, verbose_name='Публикация'
+        Post, on_delete=models.CASCADE, related_name='comments', verbose_name='Публикация'
     )
 
     class Meta:
         verbose_name = 'комментарий'
         verbose_name_plural = 'Комментарии'
-        ordering = ('-created_at',)
+        ordering = ('created_at',)
 
     def __str__(self):
         return self.text
