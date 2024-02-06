@@ -16,11 +16,19 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='comment',
             name='author',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, verbose_name='Автор комментария'),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                to=settings.AUTH_USER_MODEL,
+                verbose_name='Автор комментария',
+            ),
         ),
         migrations.AlterField(
             model_name='comment',
             name='post',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='blog.post', verbose_name='Публикация'),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                to='blog.post',
+                verbose_name='Публикация',
+            ),
         ),
     ]

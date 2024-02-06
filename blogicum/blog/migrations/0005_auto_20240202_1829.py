@@ -13,7 +13,11 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AlterModelOptions(
             name='comment',
-            options={'ordering': ('-created_at',), 'verbose_name': 'комментарий', 'verbose_name_plural': 'Комментарии'},
+            options={
+                'ordering': ('-created_at',),
+                'verbose_name': 'комментарий',
+                'verbose_name_plural': 'Комментарии',
+            },
         ),
         migrations.RemoveField(
             model_name='comment',
@@ -22,7 +26,11 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='comment',
             name='created_at',
-            field=models.DateTimeField(auto_now_add=True, default=django.utils.timezone.now, verbose_name='Дата и время комментария'),
+            field=models.DateTimeField(
+                auto_now_add=True,
+                default=django.utils.timezone.now,
+                verbose_name='Дата и время комментария',
+            ),
             preserve_default=False,
         ),
     ]
