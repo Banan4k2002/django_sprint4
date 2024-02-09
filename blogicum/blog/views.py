@@ -1,3 +1,5 @@
+import datetime
+
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.db.models import Count, Q
@@ -9,9 +11,9 @@ from django.views.generic import (
     DeleteView,
 )
 from django.contrib.auth.mixins import LoginRequiredMixin
+
 from .models import Post, Category, User, Comment
 from .forms import PostForm, CommentForm
-import datetime
 
 
 POSTS_ON_PAGE = 10
