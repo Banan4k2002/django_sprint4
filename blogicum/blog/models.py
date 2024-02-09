@@ -2,9 +2,8 @@ from django.db import models
 from django.contrib.auth import get_user_model
 
 from core.models import BaseModel
+from .consts import FIRST_CHARACTERS
 
-
-FIRST_CHARACTERS = 15
 
 User = get_user_model()
 

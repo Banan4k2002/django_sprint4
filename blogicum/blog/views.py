@@ -14,9 +14,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .models import Post, Category, User, Comment
 from .forms import PostForm, CommentForm
-
-
-POSTS_ON_PAGE = 10
+from .consts import POSTS_ON_PAGE
 
 
 class ListMixin:
