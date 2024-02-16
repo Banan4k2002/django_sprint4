@@ -1,20 +1,20 @@
 import datetime
 
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Count, Q
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
-from django.db.models import Count, Q
 from django.views.generic import (
-    ListView,
-    DetailView,
     CreateView,
-    UpdateView,
     DeleteView,
+    DetailView,
+    ListView,
+    UpdateView,
 )
-from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .models import Post, Category, User, Comment
-from .forms import PostForm, CommentForm
-from .consts import POSTS_ON_PAGE
+from blog.consts import POSTS_ON_PAGE
+from blog.forms import CommentForm, PostForm
+from blog.models import Category, Comment, Post, User
 
 
 class ListMixin:

@@ -1,9 +1,8 @@
-from django.db import models
 from django.contrib.auth import get_user_model
+from django.db import models
 
+from blog.consts import FIRST_CHARACTERS
 from core.models import BaseModel
-from .consts import FIRST_CHARACTERS
-
 
 User = get_user_model()
 
