@@ -1,9 +1,8 @@
-import datetime
-
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Count, Q
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
+from django.utils import timezone
 from django.views.generic import (
     CreateView,
     DeleteView,
@@ -36,7 +35,7 @@ class PostListView(ListMixin, ListView):
             .get_queryset()
             .filter(
                 is_published=True,
-                pub_date__lte=datetime.datetime.now(),
+                pub_date__lte=timezone.now(),
                 category__is_published=True,
             )
         )
@@ -50,7 +49,7 @@ class CategoryPostListView(ListMixin, ListView):
             super()
             .get_queryset()
             .filter(
-                pub_date__lte=datetime.datetime.now(),
+                pub_date__lte=timezone.now(),
                 is_published=True,
                 category__slug=self.kwargs.get('category_slug'),
             )
@@ -130,7 +129,7 @@ class PostDetailView(DetailView):
                 Post.objects.filter(
                     Q(author=request.user)
                     | Q(is_published=True)
-                    & Q(pub_date__lte=datetime.datetime.now())
+                    & Q(pub_date__lte=timezone.now())
                     & Q(category__is_published=True)
                 ),
                 pk=self.kwargs.get('post_id'),
