@@ -50,22 +50,22 @@ class UserPostListView(ListMixin, ListView):
     template_name = 'blog/profile.html'
 
     def get_queryset(self):
-        self.instance = get_object_or_404(
+        self.author = get_object_or_404(
             User.objects.filter(username=self.kwargs.get('username'))
         )
-        if self.instance != self.request.user:
-            return super().get_queryset().filter(author=self.instance)
+        if self.author != self.request.user:
+            return super().get_queryset().filter(author=self.author)
         else:
             return (
                 Post.objects.select_related('author', 'location', 'category')
                 .order_by('-pub_date')
                 .annotate(comment_count=Count('comments'))
-                .filter(author=self.instance)
+                .filter(author=self.author)
             )
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['profile'] = self.instance
+        context['profile'] = self.author
         return context
 
 
