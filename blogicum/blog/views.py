@@ -121,11 +121,7 @@ class PostCreateView(LoginRequiredMixin, PostFormMixin, CreateView):
 class PostUpdateView(
     LoginRequiredMixin, PostFormMixin, PostEditMixin, UpdateView
 ):
-
-    def get_success_url(self):
-        return reverse(
-            'blog:post_detail', kwargs={'post_id': self.kwargs.get('post_id')}
-        )
+    pass
 
 
 class PostDeleteView(LoginRequiredMixin, PostEditMixin, DeleteView):
